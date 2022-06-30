@@ -1,17 +1,17 @@
 package org.apirest.example.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 @Entity
 @Table( name = "cliente" )
-@Getter @Setter @AllArgsConstructor
 public class Cliente {
 
     @Id
@@ -27,15 +27,4 @@ public class Cliente {
     @JsonIgnore
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<Pedido> pedidos;
-
-    public Cliente() {
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
-    }
 }

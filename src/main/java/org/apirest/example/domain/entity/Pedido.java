@@ -1,9 +1,18 @@
 package org.apirest.example.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.apirest.example.domain.enums.StatusPedido;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "pedido")
@@ -22,6 +31,10 @@ public class Pedido {
 
     @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name ="status")
+    private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
