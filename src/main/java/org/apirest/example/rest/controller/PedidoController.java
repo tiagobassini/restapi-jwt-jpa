@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,7 +31,7 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save (@RequestBody PedidoDTO pedidoDTO){
+    public Integer save (@RequestBody @Valid PedidoDTO pedidoDTO){
 
         Pedido pedido = this.service.save(pedidoDTO);
         return pedido.getId();
@@ -44,7 +45,6 @@ public class PedidoController {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado."));
 
     }
-
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
