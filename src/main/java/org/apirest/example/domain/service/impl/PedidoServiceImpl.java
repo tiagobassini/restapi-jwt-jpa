@@ -12,6 +12,7 @@ import org.apirest.example.domain.repository.ItemPedidoRepository;
 import org.apirest.example.domain.repository.PedidoRepository;
 import org.apirest.example.domain.repository.ProdutoRepository;
 import org.apirest.example.domain.service.PedidoService;
+import org.apirest.example.exception.PedidoNaoEncontradoException;
 import org.apirest.example.exception.RegraNegocioException;
 import org.apirest.example.rest.dto.ItemPedidoDTO;
 import org.apirest.example.rest.dto.PedidoDTO;
@@ -63,6 +64,17 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return pedidoRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizarSatusPedido(Integer id, StatusPedido statusPedido) {
+        pedidoRepository.findById(id)
+                .map(pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return pedidoRepository.save(pedido);
+                })
+                .orElseThrow( () -> new PedidoNaoEncontradoException());
     }
 
 

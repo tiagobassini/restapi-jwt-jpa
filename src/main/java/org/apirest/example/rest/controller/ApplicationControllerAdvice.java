@@ -1,6 +1,7 @@
 package org.apirest.example.rest.controller;
 
 
+import org.apirest.example.exception.PedidoNaoEncontradoException;
 import org.apirest.example.exception.RegraNegocioException;
 import org.apirest.example.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -19,4 +20,10 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(mensagemError);
     }
 
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNotFoundException(PedidoNaoEncontradoException ex){
+        String mensagemError = ex.getMessage();
+        return new ApiErrors(mensagemError);
+    }
 }

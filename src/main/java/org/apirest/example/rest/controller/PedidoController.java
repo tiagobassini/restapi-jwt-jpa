@@ -3,7 +3,9 @@ package org.apirest.example.rest.controller;
 
 import org.apirest.example.domain.entity.ItemPedido;
 import org.apirest.example.domain.entity.Pedido;
+import org.apirest.example.domain.enums.StatusPedido;
 import org.apirest.example.domain.service.PedidoService;
+import org.apirest.example.rest.dto.AtualizacaoStatusPedidoDTO;
 import org.apirest.example.rest.dto.InformacoesItemPedidoDTO;
 import org.apirest.example.rest.dto.InformacoesPedidoDTO;
 import org.apirest.example.rest.dto.PedidoDTO;
@@ -43,6 +45,16 @@ public class PedidoController {
 
     }
 
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dto){
+
+        String novosStatus = dto.getNovoStatus();
+        service.atualizarSatusPedido(id, StatusPedido.valueOf(novosStatus));
+    }
+
+
     private InformacoesPedidoDTO converterPedido(Pedido pedido){
         return InformacoesPedidoDTO
                 .builder()
@@ -69,6 +81,7 @@ public class PedidoController {
                     .build()
         ).collect(Collectors.toList());
     }
+
 
 
 }
