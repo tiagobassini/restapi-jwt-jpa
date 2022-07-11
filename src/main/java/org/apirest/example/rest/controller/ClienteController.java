@@ -1,6 +1,7 @@
 package org.apirest.example.rest.controller;
 
 
+import io.swagger.annotations.*;
 import org.apirest.example.domain.entity.Cliente;
 import org.apirest.example.domain.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,19 @@ import java.util.logging.Handler;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Api("API Clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteRepository repository;
 
     @GetMapping("/{id}")
-    public Cliente findClienteById(@PathVariable Integer id){
+    @ApiOperation("Obter Detalhes de Um Cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado."),
+            @ApiResponse(code = 404, message = "Cliente não encontrado para o ID informado.")
+    })
+    public Cliente findClienteById(@PathVariable  @ApiParam("Id do Cliente") Integer id){
 
         return  repository.findById(id)
                 .orElseThrow( () ->
@@ -34,6 +41,11 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Salvar Novo Cliente")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Cliente Salvo com Sucesso."),
+            @ApiResponse(code = 400, message = "Erro de Validação.")
+    })
     public Cliente save(@RequestBody @Valid Cliente cliente){
 
         return repository.save(cliente);
